@@ -1,1 +1,3 @@
 target
+
+src/main/scala/com/orrsella/sbt/sbtstats/Main.scala
