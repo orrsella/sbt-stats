@@ -1,6 +1,6 @@
 # sbt-stats
 
-An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin that easily provides code statistics and analytics in the sbt console. It's purpose is to provide a [Bird's-eye View](http://en.wikipedia.org/wiki/Bird's-eye_view) of your project in terms of raw numbers and percentages. See [this post](http://orrsella.com/post/37654002423/introducing-tumblr4s-a-scala-library-for-the-tumblr-api) for some more background.
+An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin that easily provides source code statistics and analytics in the sbt console. It's purpose is to provide a [Bird's-eye View](http://en.wikipedia.org/wiki/Bird's-eye_view) of your project in terms of raw numbers and percentages. See [this post](http://orrsella.com/post/37654002423/introducing-tumblr4s-a-scala-library-for-the-tumblr-api) for some more background.
 
 ## Add Plugin
 
@@ -14,7 +14,7 @@ If you want to use it for more than one project, you can add it to your global p
 
 ## Usage
 
-To use sbt-stats, simple enter the `stats` command in the sbt console. It will provide basic statistics about the source files in your project:
+To use sbt-stats, simply enter the `stats` command in the sbt console. It will provide basic statistics about the source files in your project:
 
 ```
 > stats
@@ -97,9 +97,9 @@ class MyAnalyzerResult(metric1: Int, metric2: Double, ...) extends AnalyzerResul
 }
 ```
 
-As you can see, all that you need to do is override the `analyze(files: Seq[File])` method and use the `files` sequence (of source files) to calculate the metrics you're interested in. The `AnalyzerResult` object is also pretty straight-forward – the `title` is the string that'll be displayed at the top of the analyzer block in the sbt console, and the `AnalyzerMetric` objects are the body of the block. Each [metric](http://link to metric) has a mandatory title and value. Optional are the percentage and units for that metric.
+As you can see, all that you need to do is override the `analyze(files: Seq[File])` method and use the `files` sequence (of source files) to calculate the metrics you're interested in. The `AnalyzerResult` object is also pretty straight-forward – the `title` is the string that'll be displayed at the top of the analyzer block in the sbt console, and the `AnalyzerMetric` objects are the body of the block. Each [metric](https://github.com/orrsella/sbt-stats/blob/master/src/main/scala/com/orrsella/sbt/sbtstats/AnalyzerMetric.scala) has a mandatory title and value. Optional are the percentage and units for that metric.
 
-Now to tell sbt-stats to use your new analyzer, add it as explained in [configuration](https://github.com/orrsella/sbt-stats#configuration). To add the new analyzer *in addition* to the default analyzers add to `build.sbt`:
+Now to tell sbt-stats to use your new analyzer, add it as explained in [configuration](https://github.com/orrsella/sbt-stats#configuration). To add the new analyzer *in addition* to the default analyzers, add the following to `build.sbt`:
 
 ```scala
 import com.orrsella.sbt.sbtstats._
