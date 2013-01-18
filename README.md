@@ -7,7 +7,7 @@ An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin that easily provi
 To add sbt-stats functionality to your project add the following to your `project/plugins.sbt` file:
 
 ```scala
-addSbtPlugin("com.orrsella.sbt" %% "sbt-stats" % "1.0")
+addSbtPlugin("com.orrsella" %% "sbt-stats" % "1.0")
 ```
 
 If you want to use it for more than one project, you can add it to your global plugins file, usually found at: `~/.sbt/plugins/plugins.sbt` and then have it available for all sbt projects. See [Using Plugins](http://www.scala-sbt.org/release/docs/Getting-Started/Using-Plugins.html) for additional information on sbt plugins.
@@ -62,7 +62,7 @@ Here is how line types are defined for the `Lines` output:
 The plugin uses `Analyzer` classes to produce it's statistics. The default analyzers include `FilesAnalyzer` and `LinesAnalyzer` which are both automatically used (their output displayed above). You can manually configure which analyzers will be used by setting the `statsAnalyzers` sbt [setting](http://www.scala-sbt.org/release/docs/Getting-Started/Basic-Def.html). For example, add the following to your `build.sbt` file to only use the FilesAnalyzer:
 
 ```scala
-import com.orrsella.sbt.sbtstats._
+import com.orrsella.sbtstats._
 
 statsAnalyzers := Seq(new FilesAnalyzer())
 ```
@@ -74,7 +74,7 @@ The default analyzers intentionally have simple and basic implementations, calcu
 If you're interested in more statistics (like counting the number of classes, traits, objects, methods, etc.) or implementing the existing analyzers differently, you can easily do it. For example, to create a new `MyAnalyzer` place the following code in the `project` directory (for example in `project/MyAnalyzer.scala`):
 
 ```scala
-import com.orrsella.sbt.sbtstats._
+import com.orrsella.sbtstats._
 import java.io.File
 
 class MyAnalyzer extends Analyzer {
@@ -102,7 +102,7 @@ As you can see, all that you need to do is override the `analyze(files: Seq[File
 Now to tell sbt-stats to use your new analyzer, add it as explained in [configuration](https://github.com/orrsella/sbt-stats#configuration). To add the new analyzer *in addition* to the default analyzers, add the following to `build.sbt`:
 
 ```scala
-import com.orrsella.sbt.sbtstats._
+import com.orrsella.sbtstats._
 
 statsAnalyzers += new MyAnalyzer()
 ```

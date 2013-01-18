@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.orrsella.sbt.sbtstats
+package com.orrsella.sbtstats
 
 case class AnalyzerMetric(title: String, value: Double, percentage: Option[Double] = None, unit: Option[String] = None) {
   def this(title: String, value: Double, percentage: Double, unit: String) = this(title, value, Some(percentage), Some(unit))

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.orrsella.sbt.sbtstats
+package com.orrsella.sbtstats
 
 import java.io.File
 
