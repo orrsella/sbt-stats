@@ -48,7 +48,7 @@ Here is how line types are defined for the `Lines` output:
 * Code – any line that's not a comment or a blank line
 
 * Comment – any line starting with `//`, `/*` or `*`
-  * Inline comments (```val x = 5 // my comment```) are *not* counted as comment lines.
+  * In-line comments (```val x = 5 // my comment```) are *not* counted as comment lines.
   * Multi-line comment blocks (`/* ... \n ... \n ... */`) of `n` lines are counted as *only* 1 comment line and n-1 code lines (if you want more advanced comment parsing you can [easily extend](https://github.com/orrsella/sbt-stats#extending) an `Analyzer` yourself).
 
 * Blank – any empty line or spaces-only
@@ -59,7 +59,7 @@ Here is how line types are defined for the `Lines` output:
 
 ## Configuration
 
-The plugin uses `Analyzer` classes to produce it's statistics. The default analyzers include `FilesAnalyzer` and `LinesAnalyzer` which are both automatically used (their output dispayed above). You can manually configure which analyzers will be used by setting the `statsAnalyzers` sbt [setting](http://www.scala-sbt.org/release/docs/Getting-Started/Basic-Def.html). For example, add the following to your `build.sbt` file to only use the FilesAnalyzer:
+The plugin uses `Analyzer` classes to produce it's statistics. The default analyzers include `FilesAnalyzer` and `LinesAnalyzer` which are both automatically used (their output displayed above). You can manually configure which analyzers will be used by setting the `statsAnalyzers` sbt [setting](http://www.scala-sbt.org/release/docs/Getting-Started/Basic-Def.html). For example, add the following to your `build.sbt` file to only use the FilesAnalyzer:
 
 ```scala
 import com.orrsella.sbt.sbtstats._
@@ -78,7 +78,7 @@ import com.orrsella.sbt.sbtstats._
 import java.io.File
 
 class MyAnalyzer extends Analyzer {
-  // files = source files as retreived from sbt's `sources` setting
+  // files = source files as retrieved from sbt's `sources` setting
   def analyze(files: Seq[File]) = {
     val metric1 = 5   // some calculated value for first metric
     val metric2 = 8.9 // some calculated value for second metric
