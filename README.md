@@ -12,6 +12,10 @@ addSbtPlugin("com.orrsella" %% "sbt-stats" % "1.0")
 
 If you want to use it for more than one project, you can add it to your global plugins file, usually found at: `~/.sbt/plugins/plugins.sbt` and then have it available for all sbt projects. See [Using Plugins](http://www.scala-sbt.org/release/docs/Getting-Started/Using-Plugins.html) for additional information on sbt plugins.
 
+### Requirements
+
+* sbt 0.12.x
+
 ## Usage
 
 To use sbt-stats, simply enter the `stats` command in the sbt console. It will provide basic statistics about the source files in your project:
