@@ -40,7 +40,11 @@ To use sbt-stats, simply enter the `stats` command in the sbt console. It will p
 [info] - Comment:    1465 lines (57.3%)
 [info] - Blank:      165 lines (6.5%)
 [info] - Bracket:    62 lines (2.4%)
-[info] - Avg length: 12 characters (code lines only, not inc spaces)
+[info]
+[info] Characters
+[info] - Total:      93,954 chars
+[info] - Code:       32,336 chars (34.4%)
+[info] - Comment:    61,618 chars (65.6%)
 [info]
 [success] Total time: 0 s, completed Jan 17, 2013 7:17:19 PM
 ```
@@ -65,7 +69,7 @@ Here is how line types are defined for the `Lines` output:
 
 ## Configuration
 
-The plugin uses `Analyzer` classes to produce it's statistics. The default analyzers include `FilesAnalyzer` and `LinesAnalyzer` which are both automatically used (their output displayed above). You can manually configure which analyzers will be used by setting the `statsAnalyzers` sbt [setting](http://www.scala-sbt.org/release/docs/Getting-Started/Basic-Def.html). For example, add the following to your `build.sbt` file to only use the FilesAnalyzer:
+The plugin uses `Analyzer` classes to produce it's statistics. The default analyzers include `FilesAnalyzer`, `LinesAnalyzer` and `CharsAnalyzer` which are automatically used (their output displayed above). You can manually configure which analyzers will be used by setting the `statsAnalyzers` sbt [setting](http://www.scala-sbt.org/release/docs/Getting-Started/Basic-Def.html). For example, add the following to your `build.sbt` file to only use the FilesAnalyzer:
 
 ```scala
 import com.orrsella.sbtstats._
@@ -99,8 +103,8 @@ class MyAnalyzerResult(metric1: Int, metric2: Double, ...) extends AnalyzerResul
   val title = "My Analysis"
   val metrics =
     Seq(
-      new AnalyzerMetric("Metric 1:", metric1, "KB"),
-      new AnalyzerMetric("Metric 2:", metric2, 0.6, "lines"))
+      new AnalyzerMetric("Metric 1:", metric1, "files"),
+      new AnalyzerMetric("Metric 2:", metric2, 0.6, "KB"))
 }
 ```
 
@@ -126,8 +130,8 @@ Finally, here's what the output of the new `MyAnalyzer` will look like in the sb
 [info] ...
 [info]
 [info] My Analysis
-[info] - Metric 1: 5 KB
-[info] - Metric 2: 9 lines (60.0%)
+[info] - Metric 1: 5 files
+[info] - Metric 2: 100 KB (60.0%)
 [info]
 [success] Total time: 0 s, completed Jan 17, 2013 8:22:03 PM
 ```
