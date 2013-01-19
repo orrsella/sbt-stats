@@ -20,14 +20,14 @@ import java.io.File
 import scala.io.Source
 
 class FilesAnalyzer extends Analyzer {
-  def analyze(files: Seq[File]) = {
-    val scalaFiles = files.filter(_.getName.endsWith("scala")).length
-    val javaFiles = files.filter(_.getName.endsWith("java")).length
-    val totalSize = files.map(_.length).reduceLeft(_ + _)
-    val avgSize = totalSize / files.length
-    val avgLines = files.map(Source.fromFile(_).getLines.length).reduceLeft(_ + _) / files.length
+  def analyze(sources: Seq[File], packageBin: File) = {
+    val scalaFiles = sources.filter(_.getName.endsWith("scala")).length
+    val javaFiles = sources.filter(_.getName.endsWith("java")).length
+    val totalSize = sources.map(_.length).reduceLeft(_ + _)
+    val avgSize = totalSize / sources.length
+    val avgLines = sources.map(Source.fromFile(_).getLines.length).reduceLeft(_ + _) / sources.length
 
-    new FilesAnalyzerResult(files.length, scalaFiles, javaFiles, totalSize, avgSize, avgLines)
+    new FilesAnalyzerResult(sources.length, scalaFiles, javaFiles, totalSize, avgSize, avgLines)
   }
 }
 

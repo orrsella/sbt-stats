@@ -33,17 +33,17 @@ object SbtStatsPlugin extends Plugin {
   override lazy val projectSettings = super.projectSettings ++ statsSettings ++ statsAnalyzersSettings
 
   private def makeTask(config: Configuration): Setting[Task[Unit]] = {
-    stats in config <<= (statsAnalyzers, sources in config, state, compile in config) map {
-      (analyzers, sources, state, compile) => statsImpl(analyzers, sources, state.log)
+    stats in config <<= (statsAnalyzers, sources in config, packageBin in config, state, compile in config) map {
+      (analyzers, sources, packageBin, state, compile) => statsImpl(analyzers, sources, packageBin, state.log)
     }
   }
 
-  private def statsImpl(analyzers: Seq[Analyzer], sources: Seq[File], log: Logger) {
+  private def statsImpl(analyzers: Seq[Analyzer], sources: Seq[File], packageBin: File, log: Logger) {
     log.info("Code Statistics:")
     log.info("")
 
     for (a <- analyzers) {
-      log.info(a.analyze(sources).toString)
+      log.info(a.analyze(sources, packageBin).toString)
       log.info("")
     }
   }

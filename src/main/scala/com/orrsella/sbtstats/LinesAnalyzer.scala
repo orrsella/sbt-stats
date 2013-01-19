@@ -20,9 +20,9 @@ import java.io.File
 import scala.io.Source
 
 class LinesAnalyzer extends Analyzer {
-  def analyze(files: Seq[File]) = {
+  def analyze(sources: Seq[File], packageBin: File) = {
     val lines: Seq[Line] = for {
-      file <- files
+      file <- sources
       line <- Source.fromFile(file).getLines
     } yield new Line(line)
 
