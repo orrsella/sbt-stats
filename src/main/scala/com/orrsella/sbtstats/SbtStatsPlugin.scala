@@ -39,6 +39,7 @@ object SbtStatsPlugin extends Plugin {
   }
 
   private def statsImpl(analyzers: Seq[Analyzer], sources: Seq[File], packageBin: File, log: Logger) {
+    log.info("")
     log.info("Code Statistics:")
     log.info("")
 
