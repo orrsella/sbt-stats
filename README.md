@@ -98,7 +98,7 @@ class MyAnalyzerResult(metric1: Int, metric2: Double, ...) extends AnalyzerResul
 }
 ```
 
-As you can see, all that you need to do is override the `analyze(sources: Seq[File], packageBin: File)` method and use the `sources` sequence (of source files) *or* `packageBin` file (the output jar) to calculate the metrics you're interested in. The `AnalyzerResult` object is also pretty straight-forward – the `title` is the string that'll be displayed at the top of the analyzer block in the sbt console, and the `AnalyzerMetric` objects are the body of the block. Each [metric](https://github.com/orrsella/sbt-stats/blob/master/src/main/scala/com/orrsella/sbtstats/AnalyzerMetric.scala) has a mandatory title and value. Optional are the percentage and units for that metric.
+As you can see, all that you need to do is override the `analyze(sources: Seq[File], packageBin: File)` method and use the `sources` sequence (of source files) *and/or* `packageBin` file (the output jar) to calculate the metrics you're interested in. The `AnalyzerResult` object is also pretty straight-forward – the `title` is the string that'll be displayed at the top of the analyzer block in the sbt console, and the `AnalyzerMetric` objects are the body of the block. Each [metric](https://github.com/orrsella/sbt-stats/blob/master/src/main/scala/com/orrsella/sbtstats/AnalyzerMetric.scala) has a mandatory title and value. Optional are the percentage and units for that metric.
 
 Now to tell sbt-stats to use your new analyzer, add it as explained in [configuration](https://github.com/orrsella/sbt-stats#configuration). To add the new analyzer *in addition* to the default analyzers, add the following to `build.sbt`:
 
