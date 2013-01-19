@@ -81,8 +81,8 @@ class MyAnalyzer extends Analyzer {
   // sources: source files as retrieved from sbt's `sources` setting
   // packageBin: the output jar file as retrieved from sbt's `packageBin` task
   def analyze(sources: Seq[File], packageBin: File) = {
-    val metric1 = 5   // some calculated value for first metric
-    val metric2 = 8.9 // some calculated value for second metric
+    val metric1 = sources.filter(_.getName.endsWith("foo")).length // completely useless metric 1
+    val metric2 = packageBin.length^2                              // completely useless metric 2
     ...
     new MyAnalyzerResult(metric1, metric2, ...)
   }
