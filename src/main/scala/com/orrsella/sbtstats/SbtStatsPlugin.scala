@@ -28,7 +28,7 @@ object SbtStatsPlugin extends Plugin {
   lazy val statsSettings = configs map makeTask
 
   lazy val statsAnalyzers = SettingKey[Seq[Analyzer]]("stats-analyzers")
-  lazy val statsAnalyzersSettings = statsAnalyzers := Seq(new FilesAnalyzer(), new LinesAnalyzer())
+  lazy val statsAnalyzersSettings = statsAnalyzers := Seq(new FilesAnalyzer(), new LinesAnalyzer(), new CharsAnalyzer())
 
   override lazy val projectSettings = super.projectSettings ++ statsSettings ++ statsAnalyzersSettings
 
