@@ -16,6 +16,8 @@ If you want to use it for more than one project, you can add it to your global p
 
 * sbt 0.12.x
 
+* Scala 2.9.x, 2.10.0
+
 ## Usage
 
 To use sbt-stats, simply enter the `stats` command in the sbt console. It will provide basic statistics about the source files in your project:
