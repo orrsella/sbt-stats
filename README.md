@@ -49,7 +49,7 @@ To use sbt-stats, simply enter the `stats` command in the sbt console. It will p
 [success] Total time: 0 s, completed Jan 17, 2013 7:17:19 PM
 ```
 
-As you can see, the default output provides file/line statistics (you can [easily extend](https://github.com/orrsella/sbt-stats#extending) the analysis with your own logic).
+As you can see, the default output provides file, line and char statistics (you can [easily extend](https://github.com/orrsella/sbt-stats#extending) the analysis with your own logic).
 
 ### Output
 
