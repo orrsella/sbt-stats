@@ -1,6 +1,6 @@
 # sbt-stats
 
-An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin that easily provides source code statistics and analytics in the sbt console. It's purpose is to provide a [Bird's-eye View](http://en.wikipedia.org/wiki/Bird's-eye_view) of your project in terms of raw numbers and percentages. See [this post](http://orrsella.com/post/37654002423/introducing-tumblr4s-a-scala-library-for-the-tumblr-api) for some more background.
+An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin that easily provides source code statistics and analytics in the sbt console. It's purpose is to provide a [Bird's-eye View](http://en.wikipedia.org/wiki/Bird's-eye_view) of your project in terms of raw numbers and percentages. See [this post](http://orrsella.com/post/41001293440/introducing-sbt-stats-an-sbt-plugin-for-source-code-stat) for some more background.
 
 ## Add Plugin
 
