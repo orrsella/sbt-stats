@@ -2,6 +2,8 @@
 
 An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin that easily provides source code statistics and analytics in the sbt console. It's purpose is to provide a Bird's-eye View of your project in terms of raw numbers and percentages. See [this post](http://orrsella.com/post/41001293440/introducing-sbt-stats-an-sbt-plugin-for-source-code-stat) for some more background.
 
+NOTE: Currently working on multi-project support, hope to have it available soon.
+
 ## Add Plugin
 
 To add sbt-stats functionality to your project add the following to your `project/plugins.sbt` file:
