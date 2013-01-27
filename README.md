@@ -1,15 +1,13 @@
 # sbt-stats
 
-An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin that easily provides source code statistics and analytics in the sbt console. It's purpose is to provide a Bird's-eye View of your project in terms of raw numbers and percentages. See [this post](http://orrsella.com/post/41001293440/introducing-sbt-stats-an-sbt-plugin-for-source-code-stat) for some more background.
-
-NOTE: Currently working on multi-project support, hope to have it available soon.
+An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin that easily provides source code statistics and analytics in the sbt console. It's purpose is to provide a Bird's-eye View of your project in terms of raw numbers and percentages. Can provide statistics for an entire multi-project build, or on a per-project basis. See [this post](http://orrsella.com/post/41001293440/introducing-sbt-stats-an-sbt-plugin-for-source-code-stat) for some more background.
 
 ## Add Plugin
 
 To add sbt-stats functionality to your project add the following to your `project/plugins.sbt` file:
 
 ```scala
-addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0")
+addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.1")
 ```
 
 If you want to use it for more than one project, you can add it to your global plugins file, usually found at: `~/.sbt/plugins/plugins.sbt` and then have it available for all sbt projects. See [Using Plugins](http://www.scala-sbt.org/release/docs/Getting-Started/Using-Plugins.html) for additional information on sbt plugins.
@@ -21,36 +19,64 @@ If you want to use it for more than one project, you can add it to your global p
 
 ## Usage
 
-To use sbt-stats, simply enter the `stats` command in the sbt console. It will provide basic statistics about the source files in your project:
+To use sbt-stats, simply enter the `stats` command in the sbt console. It will provide basic statistics about the source files in your single-project build, or all projects aggregated if you have a multi-project setup. Here's an example for the [akka](https://github.com/akka/akka) project:
 
 ```
-> stats
-[info] Code Statistics:
+akka > stats
+[info] Code Statistics for project:
 [info]
 [info] Files
-[info] - Total:      42 files
-[info] - Scala:      42 files (100.0%)
-[info] - Java:       0 files (0.0%)
-[info] - Total size: 98 KB
-[info] - Avg size:   2 KB
-[info] - Avg length: 60 lines
+[info] - Total:      267 files
+[info] - Scala:      214 files (80.1%)
+[info] - Java:       53 files (19.9%)
+[info] - Total size: 2,101,408 Bytes
+[info] - Avg size:   164,258 Bytes
+[info] - Avg length: 4,545 lines
 [info]
 [info] Lines
-[info] - Total:      2558 lines
-[info] - Code:       928 lines (36.3%)
-[info] - Comment:    1465 lines (57.3%)
-[info] - Blank:      165 lines (6.5%)
-[info] - Bracket:    62 lines (2.4%)
+[info] - Total:      57,443 lines
+[info] - Code:       34,388 lines (59.9%)
+[info] - Comment:    15,864 lines (27.6%)
+[info] - Blank:      7,191 lines (12.5%)
+[info] - Bracket:    5,760 lines (10.0%)
 [info]
 [info] Characters
-[info] - Total:      93,954 chars
-[info] - Code:       32,336 chars (34.4%)
-[info] - Comment:    61,618 chars (65.6%)
-[info]
-[success] Total time: 0 s, completed Jan 17, 2013 7:17:19 PM
+[info] - Total:      1,821,830 chars
+[info] - Code:       1,272,314 chars (69.8%)
+[info] - Comment:    549,516 chars (30.2%)
 ```
 
-As you can see, the default output provides file, line and char statistics (you can [easily extend](https://github.com/orrsella/sbt-stats#extending) the analysis with your own logic).
+The default output provides File, Line and Character statistics (the analysis can be [easily extended](https://github.com/orrsella/sbt-stats#extending) with custom logic). These stats are aggregated accross all 30 projects in the akka build.
+
+To get statistics for a single project, select it using `project PROJECT_NAME` and run `stats-project`. This will only run the task on the selected project, and won't aggregate any subprojects. For example:
+
+```
+akka > project akka-actor
+[info] Set current project to akka-actor (in build file:/Users/orr/Development/Scala/Projects/akka/)
+akka-actor > stats-project
+[info]
+[info] Code Statistics for project 'akka-actor':
+[info]
+[info] Files
+[info] - Total:      91 files
+[info] - Scala:      78 files (85.7%)
+[info] - Java:       13 files (14.3%)
+[info] - Total size: 765,238 Bytes
+[info] - Avg size:   8,409 Bytes
+[info] - Avg length: 229 lines
+[info]
+[info] Lines
+[info] - Total:      20,894 lines
+[info] - Code:       10,161 lines (48.6%)
+[info] - Comment:    8,078 lines (38.7%)
+[info] - Blank:      2,655 lines (12.7%)
+[info] - Bracket:    1,583 lines (7.6%)
+[info]
+[info] Characters
+[info] - Total:      680,139 chars
+[info] - Code:       405,894 chars (59.7%)
+[info] - Comment:    274,245 chars (40.3%)
+```
 
 ### Output
 
@@ -101,11 +127,11 @@ class MyAnalyzerResult(metric1: Int, metric2: Double, ...) extends AnalyzerResul
   val metrics =
     Seq(
       new AnalyzerMetric("Metric 1:", metric1, "files"),
-      new AnalyzerMetric("Metric 2:", metric2, 0.6, "KB"))
+      new AnalyzerMetric("Metric 2:", metric2, 3500, "Bytes"))
 }
 ```
 
-As you can see, all that you need to do is override the `analyze(sources: Seq[File], packageBin: File)` method and use the `sources` sequence (of source files) *and/or* `packageBin` file (the output jar) to calculate the metrics you're interested in. The `AnalyzerResult` object is also pretty straight-forward – the `title` is the string that'll be displayed at the top of the analyzer block in the sbt console, and the `AnalyzerMetric` objects are the body of the block. Each [metric](https://github.com/orrsella/sbt-stats/blob/master/src/main/scala/com/orrsella/sbtstats/AnalyzerMetric.scala) has a mandatory title and value. Optional are the percentage and units for that metric.
+As you can see, all that you need to do is override the `analyze(sources: Seq[File], packageBin: File)` method of the [Analyzer](https://github.com/orrsella/sbt-stats/blob/master/src/main/scala/com/orrsella/sbtstats/Analyzer.scala) class and use the `sources` sequence (of source files) *and/or* `packageBin` file (the output jar) to calculate the metrics you're interested in. The `AnalyzerResult` object is also pretty straight-forward – the `title` is the string that'll be displayed at the top of the analyzer block in the sbt console, and the `AnalyzerMetric` objects are the body of the block. Each [metric](https://github.com/orrsella/sbt-stats/blob/master/src/main/scala/com/orrsella/sbtstats/AnalyzerMetric.scala) has a mandatory `title` and `value`. Optional are `total` (used to calculate percentage) and `units` for that metric.
 
 Now to tell sbt-stats to use your new analyzer, add it as explained in [configuration](https://github.com/orrsella/sbt-stats#configuration). To add the new analyzer *in addition* to the default analyzers, add the following to `build.sbt`:
 
@@ -128,9 +154,7 @@ Finally, here's what the output of the new `MyAnalyzer` will look like in the sb
 [info]
 [info] My Analysis
 [info] - Metric 1: 5 files
-[info] - Metric 2: 100 KB (60.0%)
-[info]
-[success] Total time: 0 s, completed Jan 17, 2013 8:22:03 PM
+[info] - Metric 2: 100 Bytes (60.0%)
 ```
 
 ## Feedback
