@@ -17,7 +17,6 @@ If you want to use it for more than one project, you can add it to your global p
 ### Requirements
 
 * sbt 0.12.x
-
 * Scala 2.9.x, 2.10.0
 
 ## Usage
@@ -58,15 +57,11 @@ As you can see, the default output provides file, line and char statistics (you 
 Here is how line types are defined for the `Lines` output:
 
 * Code – any line that's not a comment or a blank line
-
 * Comment – any line starting with `//`, `/*` or `*`
   * In-line comments (```val x = 5 // my comment```) are *not* counted as comment lines.
   * Multi-line comment blocks (`/* ... \n ... \n ... */`) of `n` lines are counted as *only* 1 comment line and n-1 code lines (if you want more advanced comment parsing you can [easily extend](https://github.com/orrsella/sbt-stats#extending) an `Analyzer` yourself).
-
 * Blank – any empty line or spaces-only
-
 * Bracket – a line consisting of *only* an opening *or* closing curly brace
-
 * Since bracket lines are obviously code: code % + comment % + blank % = 100%
 
 ## Configuration

@@ -26,9 +26,9 @@ class CharsAnalyzer extends Analyzer {
       line <- Source.fromFile(file).getLines
     } yield new Line(line)
 
-    val totalChars = lines.map(_.length).reduceLeft(_ + _)
-    val codeChars = lines.filter(_.isCode).map(_.length).reduceLeft(_ + _)
-    val commentChars = lines.filter(_.isComment).map(_.length).reduceLeft(_ + _)
+    val totalChars = lines.map(_.length).foldLeft(0)(_ + _)
+    val codeChars = lines.filter(_.isCode).map(_.length).foldLeft(0)(_ + _)
+    val commentChars = lines.filter(_.isComment).map(_.length).foldLeft(0)(_ + _)
 
     new CharAnalyzerResult(totalChars, codeChars, commentChars)
   }
@@ -40,6 +40,6 @@ class CharAnalyzerResult(totalChars: Int, codeChars: Int, commentChars: Int) ext
   val metrics =
     Seq(
       new AnalyzerMetric("Total:     ", totalChars, "chars"),
-      new AnalyzerMetric("Code:      ", codeChars, codeChars.toDouble / totalChars, "chars"),
-      new AnalyzerMetric("Comment:   ", commentChars, commentChars.toDouble / totalChars, "chars"))
+      new AnalyzerMetric("Code:      ", codeChars, totalChars, "chars"),
+      new AnalyzerMetric("Comment:   ", commentChars, totalChars, "chars"))
 }

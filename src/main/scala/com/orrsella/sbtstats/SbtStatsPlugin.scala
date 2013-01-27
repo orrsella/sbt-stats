@@ -22,30 +22,65 @@ import sbt.Keys._
 
 object SbtStatsPlugin extends Plugin {
 
-  private val configs = Seq(Compile, Test)
-
-  lazy val stats = TaskKey[Unit]("stats", "Get code statistics for the project")
-  lazy val statsSettings = configs map makeTask
-
   lazy val statsAnalyzers = SettingKey[Seq[Analyzer]]("stats-analyzers")
-  lazy val statsAnalyzersSettings = statsAnalyzers := Seq(new FilesAnalyzer(), new LinesAnalyzer(), new CharsAnalyzer())
+  lazy val statsProject = TaskKey[Unit]("stats-project", "Prints code statistics for a single project, the current one")
+  lazy val statsProjectNoPrint = TaskKey[Seq[AnalyzerResult]](
+    "stats-project-no-print", "Returns code statistics for a project, without printing it (shouldn't be used directly)")
 
-  override lazy val projectSettings = super.projectSettings ++ statsSettings ++ statsAnalyzersSettings
+  override lazy val settings = Seq(
+    commands += statsCommand,
+    statsAnalyzers := Seq(new FilesAnalyzer(), new LinesAnalyzer(), new CharsAnalyzer()),
+    statsProject <<= (statsProjectNoPrint, name, state) map { (res, n, s) => statsProjectTask(res, n, s.log) },
+    statsProjectNoPrint <<= (statsAnalyzers, sources in Compile, packageBin in Compile, state, compile in Compile) map {
+      (ana, src, packg, s, c) => statsProjectNoPrintTask(ana, src, packg, s.log)
+    },
+    aggregate in statsProject := false,
+    aggregate in statsProjectNoPrint := false
+  )
 
-  private def makeTask(config: Configuration): Setting[Task[Unit]] = {
-    stats in config <<= (statsAnalyzers, sources in config, packageBin in config, state, compile in config) map {
-      (analyzers, sources, packageBin, state, compile) => statsImpl(analyzers, sources, packageBin, state.log)
+  def statsCommand = Command.command("stats") { state => doCommand(state) }
+
+  private def doCommand(state: State): State = {
+    val log = state.log
+    val extracted: Extracted = Project.extract(state)
+    val structure = extracted.structure
+    val projectRefs = structure.allProjectRefs
+
+    val results: Seq[AnalyzerResult] = projectRefs.flatMap {
+      projectRef => EvaluateTask(structure, statsProjectNoPrint, state, projectRef) match {
+        case Some((state, Value(seq))) => seq
+        case _ => Seq()
+      }
     }
+
+    val distinctTitles = results.map(_.title).distinct
+    val summedResults = distinctTitles.map(t => results.filter(r => r.title == t).reduceLeft(_ + _))
+
+    log.info("")
+    log.info("Code Statistics for project:")
+    log.info("")
+
+    summedResults.foreach(res => {
+      log.info(res.toString)
+      log.info("")
+    })
+
+    // return unchanged state
+    state
   }
 
-  private def statsImpl(analyzers: Seq[Analyzer], sources: Seq[File], packageBin: File, log: Logger) {
+  private def statsProjectTask(results: Seq[AnalyzerResult], name: String, log: Logger) {
     log.info("")
-    log.info("Code Statistics:")
+    log.info("Code Statistics for project '" + name + "':")
     log.info("")
 
-    for (a <- analyzers) {
-      log.info(a.analyze(sources, packageBin).toString)
+    results.foreach(res => {
+      log.info(res.toString)
       log.info("")
-    }
+    })
+  }
+
+  private def statsProjectNoPrintTask(analyzers: Seq[Analyzer], sources: Seq[File], packageBin: File, log: Logger) = {
+    for (a <- analyzers) yield a.analyze(sources, packageBin)
   }
 }

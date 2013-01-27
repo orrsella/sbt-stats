@@ -31,7 +31,7 @@ class LinesAnalyzer extends Analyzer {
     val commentLines = lines.filter(_.isComment).length
     val bracketLines = lines.filter(_.isBracket).length
     val blankLines = lines.filter(_.isBlank).length
-    //val avgLength = lines.filter(_.isCode).map(_.length).reduceLeft(_ + _) / totalLines
+    //val avgLength = lines.filter(_.isCode).map(_.length).foldLeft(0)(_ + _) / totalLines // check that totalLines is not 0
 
     new LinesAnalyzerResult(totalLines, codeLines, commentLines, bracketLines, blankLines)
   }
@@ -49,9 +49,9 @@ class LinesAnalyzerResult(
   val metrics =
     Seq(
       new AnalyzerMetric("Total:     ", totalLines, "lines"),
-      new AnalyzerMetric("Code:      ", codeLines, codeLines.toDouble / totalLines, "lines"),
-      new AnalyzerMetric("Comment:   ", commentLines, commentLines.toDouble / totalLines, "lines"),
-      new AnalyzerMetric("Blank:     ", blankLines, blankLines.toDouble / totalLines, "lines"),
-      new AnalyzerMetric("Bracket:   ", bracketLines, bracketLines.toDouble / totalLines, "lines"))
+      new AnalyzerMetric("Code:      ", codeLines, totalLines, "lines"),
+      new AnalyzerMetric("Comment:   ", commentLines, totalLines, "lines"),
+      new AnalyzerMetric("Blank:     ", blankLines, totalLines, "lines"),
+      new AnalyzerMetric("Bracket:   ", bracketLines, totalLines, "lines"))
       // new AnalyzerMetric("Avg length:", avgLength, "characters (code lines only, not inc spaces)"))
 }

@@ -23,9 +23,11 @@ class FilesAnalyzer extends Analyzer {
   def analyze(sources: Seq[File], packageBin: File) = {
     val scalaFiles = sources.filter(_.getName.endsWith("scala")).length
     val javaFiles = sources.filter(_.getName.endsWith("java")).length
-    val totalSize = sources.map(_.length).reduceLeft(_ + _)
-    val avgSize = totalSize / sources.length
-    val avgLines = sources.map(Source.fromFile(_).getLines.length).reduceLeft(_ + _) / sources.length
+    val totalSize = sources.map(_.length).foldLeft(0l)(_ + _)
+    val avgSize = if (sources.length == 0) 0 else totalSize / sources.length
+    val avgLines =
+      if (sources.length == 0) 0
+      else sources.map(Source.fromFile(_).getLines.length).foldLeft(0)(_ + _) / sources.length
 
     new FilesAnalyzerResult(sources.length, scalaFiles, javaFiles, totalSize, avgSize, avgLines)
   }
@@ -44,9 +46,9 @@ class FilesAnalyzerResult(
   val metrics =
     Seq(
       new AnalyzerMetric("Total:     ", totalFiles, "files"),
-      new AnalyzerMetric("Scala:     ", scalaFiles, scalaFiles.toDouble / totalFiles, "files"),
-      new AnalyzerMetric("Java:      ", javaFiles, javaFiles.toDouble / totalFiles, "files"),
-      new AnalyzerMetric("Total size:", totalSize.toDouble / 1024, "KB"),
-      new AnalyzerMetric("Avg size:  ", avgSize.toDouble / 1024, "KB"),
+      new AnalyzerMetric("Scala:     ", scalaFiles, totalFiles, "files"),
+      new AnalyzerMetric("Java:      ", javaFiles, totalFiles, "files"),
+      new AnalyzerMetric("Total size:", totalSize.toDouble, "Bytes"),
+      new AnalyzerMetric("Avg size:  ", avgSize.toDouble, "Bytes"),
       new AnalyzerMetric("Avg length:", avgLines, "lines"))
 }
