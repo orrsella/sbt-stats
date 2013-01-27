@@ -9,7 +9,7 @@ NOTE: Currently working on multi-project support, hope to have it available soon
 To add sbt-stats functionality to your project add the following to your `project/plugins.sbt` file:
 
 ```scala
-addSbtPlugin("com.orrsella" %% "sbt-stats" % "1.0")
+addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0")
 ```
 
 If you want to use it for more than one project, you can add it to your global plugins file, usually found at: `~/.sbt/plugins/plugins.sbt` and then have it available for all sbt projects. See [Using Plugins](http://www.scala-sbt.org/release/docs/Getting-Started/Using-Plugins.html) for additional information on sbt plugins.
