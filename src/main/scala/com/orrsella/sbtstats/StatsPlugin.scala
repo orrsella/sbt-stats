@@ -20,7 +20,7 @@ import java.io.File
 import sbt._
 import sbt.Keys._
 
-object SbtStatsPlugin extends Plugin {
+object StatsPlugin extends Plugin {
 
   lazy val statsAnalyzers = SettingKey[Seq[Analyzer]]("stats-analyzers")
   lazy val statsProject = TaskKey[Unit]("stats-project", "Prints code statistics for a single project, the current one")
