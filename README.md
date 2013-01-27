@@ -157,6 +157,8 @@ Finally, here's what the output of the new `MyAnalyzer` will look like in the sb
 [info] - Metric 2: 100 Bytes (60.0%)
 ```
 
+For a full Analyzer class you can see [FilesAnalyzer](https://github.com/orrsella/sbt-stats/blob/master/src/main/scala/com/orrsella/sbtstats/FilesAnalyzer.scala) for example.
+
 ## Feedback
 
 Any comments/suggestions? Let me know what you think – I'd love to hear from you. Send pull requests, issues or contact me: [@orrsella](http://twitter.com/orrsella) and [orrsella.com](http://orrsella.com)
