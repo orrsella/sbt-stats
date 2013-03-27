@@ -4,12 +4,16 @@ name := "sbt-stats"
 
 organization := "com.orrsella"
 
-version := "1.0.1"
+version := "1.0.3-SNAPSHOT"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
 
 // publishing related
-crossScalaVersions := Seq("2.9.0", "2.9.1", "2.9.2", "2.10.0")
+crossScalaVersions := Seq("2.9.0", "2.9.1", "2.9.2", "2.9.3", "2.10.0", "2.10.1")
+
+scalaVersion := "2.10.1"
+
+// scalacOptions ++= Seq("-feature")
 
 publishTo <<= version { v: String =>
   val nexus = "https://oss.sonatype.org/"
