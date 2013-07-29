@@ -4,7 +4,7 @@ name := "sbt-stats"
 
 organization := "com.orrsella"
 
-version := "1.0.3"
+version := "1.0.4-SNAPSHOT"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
 
@@ -13,6 +13,7 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
 
 // scalaVersion := "2.10.1"
 
+// sbtVersion in Global := "0.12.4"
 sbtVersion in Global := "0.13.0-RC3"
 
 scalaVersion in Global := "2.10.2"
