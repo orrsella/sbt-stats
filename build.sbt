@@ -4,14 +4,18 @@ name := "sbt-stats"
 
 organization := "com.orrsella"
 
-version := "1.0.3-SNAPSHOT"
+version := "1.0.3"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
 
 // publishing related
-crossScalaVersions := Seq("2.9.0", "2.9.1", "2.9.2", "2.9.3", "2.10.0", "2.10.1")
+// crossScalaVersions := Seq("2.9.0", "2.9.1", "2.9.2", "2.9.3", "2.10.0", "2.10.1")
 
-scalaVersion := "2.10.1"
+// scalaVersion := "2.10.1"
+
+sbtVersion in Global := "0.13.0-RC3"
+
+scalaVersion in Global := "2.10.2"
 
 // scalacOptions ++= Seq("-feature")
 
