@@ -20,10 +20,10 @@ import java.io.File
 import scala.io.Source
 
 class LinesAnalyzer extends Analyzer {
-  def analyze(sources: Seq[File], packageBin: File) = {
+  def analyze(sources: Seq[File], packageBin: File, encoding: String) = {
     val lines: Seq[Line] = for {
       file <- sources
-      line <- Source.fromFile(file).getLines
+      line <- Source.fromFile(file, encoding).getLines
     } yield new Line(line)
 
     val totalLines = lines.length
