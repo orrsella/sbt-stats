@@ -4,7 +4,7 @@ name := "sbt-stats"
 
 organization := "com.orrsella"
 
-version := "1.0.4"
+version := "1.0.5-SNAPSHOT"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
 
