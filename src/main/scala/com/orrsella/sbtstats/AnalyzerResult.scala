@@ -16,6 +16,8 @@
 
 package com.orrsella.sbtstats
 
+import scala.language.implicitConversions
+
 abstract class AnalyzerResult {
   def title: String
   def metrics: Seq[AnalyzerMetric]
