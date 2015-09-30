@@ -59,7 +59,7 @@ akka > stats
 [info] - Comment:    549,516 chars (30.2%)
 ```
 
-The default output provides File, Line and Character statistics (the analysis can be [easily extended](https://github.com/orrsella/sbt-stats#extending) with custom logic). These stats are aggregated accross all 30 projects in the akka build.
+The default output provides File, Line and Character statistics (the analysis can be [easily extended](https://github.com/orrsella/sbt-stats#extending) with custom logic). These stats are aggregated across all 30 projects in the akka build.
 
 To get statistics for a single project, select it using `project PROJECT_NAME` and run `stats-project`. This will only run the task on the selected project, and won't aggregate any subprojects. For example:
 
