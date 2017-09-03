@@ -4,25 +4,16 @@ name := "sbt-stats"
 
 organization := "com.orrsella"
 
-version := "1.0.6-SNAPSHOT"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
-
-// scalaVersion in Global := "2.10.2"
-// scalacOptions ++= Seq("-feature")
+scalacOptions ++= Seq("-feature")
 
 // publishing
-crossScalaVersions <<= sbtVersion { ver =>
-  ver match {
-    case "0.12.4" => Seq("2.9.0", "2.9.1", "2.9.2", "2.9.3", "2.10.2")
-    case "0.13.0" => Seq("2.10.2")
-    case _ => sys.error("Unknown sbt version")
-  }
-}
+crossSbtVersions := Vector("0.13.16", "1.0.1")
 
-publishTo <<= version { v: String =>
+publishTo := {
   val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
+  if (version.value.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
@@ -52,4 +43,23 @@ pomExtra := (
       <url>http://orrsella.com</url>
     </developer>
   </developers>
+)
+
+releasePublishArtifactsAction := PgpKeys.publishSigned.value
+
+import ReleaseTransformations._
+
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  releaseStepCommand("publishSigned"),
+  setNextVersion,
+  commitNextVersion,
+  releaseStepCommand("sonatypeReleaseAll"),
+  pushChanges
 )

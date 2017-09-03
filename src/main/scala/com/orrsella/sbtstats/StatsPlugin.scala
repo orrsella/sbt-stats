@@ -20,32 +20,31 @@ import java.io.File
 import sbt._
 import sbt.Keys._
 
-object StatsPlugin extends Plugin {
+object StatsPlugin extends AutoPlugin {
 
-  lazy val statsAnalyzers = SettingKey[Seq[Analyzer]]("stats-analyzers")
-  lazy val statsProject = TaskKey[Unit]("stats-project", "Prints code statistics for a single project, the current one")
-  lazy val statsProjectNoPrint = TaskKey[Seq[AnalyzerResult]](
-    "stats-project-no-print", "Returns code statistics for a project, without printing it (shouldn't be used directly)")
-  lazy val statsEncoding = TaskKey[String]("stats-encoding")
+  object autoImport {
+    lazy val statsAnalyzers = settingKey[Seq[Analyzer]]("stats-analyzers")
+    lazy val statsProject = taskKey[Unit]("Prints code statistics for a single project, the current one")
+    lazy val statsProjectNoPrint = taskKey[Seq[AnalyzerResult]]("Returns code statistics for a project, without printing it (shouldn't be used directly)")
+    lazy val statsEncoding = settingKey[String]("stats-encoding")
+  }
 
-  override lazy val settings = Seq(
+  import autoImport._
+
+  lazy val statsSettings = Seq(
     commands += statsCommand,
     statsAnalyzers := Seq(new FilesAnalyzer(), new LinesAnalyzer(), new CharsAnalyzer()),
-    statsProject <<= (statsProjectNoPrint, name, state) map { (res, n, s) => statsProjectTask(res, n, s.log) },
-    statsProjectNoPrint <<= (statsAnalyzers, sources in Compile, packageBin in Compile, state, statsEncoding, compile in Compile) map {
-      (ana, src, packg, s, enc, c) => statsProjectNoPrintTask(ana, src, packg, enc, s.log)
-    },
-    statsEncoding <<= scalacOptions.map{
-      _.sliding(2).foldLeft("UTF-8"){
-        case (_, List("-encoding", enc)) => enc
-        case (enc, _) => enc
-      }
-    },
+    statsProject := statsProjectTask(statsProjectNoPrint.value, name.value, state.value.log),
+    statsProjectNoPrint := statsProjectNoPrintTask(statsAnalyzers.value, (sources in Compile).value, (packageBin in Compile).value, statsEncoding.value, state.value.log),
+    statsEncoding := "UTF-8",
     aggregate in statsProject := false,
     aggregate in statsProjectNoPrint := false
   )
 
-  def statsCommand = Command.command("stats") { state => doCommand(state) }
+  override def trigger = allRequirements
+  override lazy val projectSettings = statsSettings ++ Seq(Keys.commands ++= Seq(statsCommand))
+
+  lazy val statsCommand = Command.command("stats") { state => doCommand(state) }
 
   private def doCommand(state: State): State = {
     val log = state.log
