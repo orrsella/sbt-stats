@@ -7,7 +7,11 @@ An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin that easily provi
 To add sbt-stats functionality to your project add the following to your `project/plugins.sbt` file:
 
 ```scala
-addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.5")
+// sbt 1.0:
+addSbtPlugin("com.orrsella" % "sbt-sublime" % "1.0.7")
+
+// sbt 0.13:
+addSbtPlugin("com.orrsella" % "sbt-sublime" % "1.0.5")
 ```
 
 If you want to use it for more than one project, you can add it to your global plugins file, usually found at: `~/.sbt/plugins/plugins.sbt` and then have it available for all sbt projects. See [Using Plugins](http://www.scala-sbt.org/release/docs/Getting-Started/Using-Plugins.html) for additional information on sbt plugins.
@@ -27,8 +31,9 @@ Essentially, this enters the `project` project, cleans it, and returns back to y
 
 ### Requirements
 
-* sbt 0.12.x, 0.13.x
-* Scala 2.9.x, 2.10.x
+* sbt 1.0+, Scala 2.12.x
+* sbt 0.13.5+ (requires `AutoPlugin`), Scala 2.10.x
+
 
 ## Usage
 
